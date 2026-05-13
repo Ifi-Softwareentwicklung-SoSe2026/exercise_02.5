@@ -99,7 +99,6 @@ interface IVergleichbar<T> {
 > - `==` (Gleichheit)
 > - `!=` (Ungleichheit)
 > - `>=`, `<=` (optional)
-> - `<=`, `>=` (optional)
 >
 > Damit kannst du statt `erde.IstGroesserAls(mond)` direkt `erde > mond` schreiben.
 > Die Interface-Methoden bleiben die eigentliche Implementierung, die Operatoren sind nur **syntaktischer Zucker** darüber.
