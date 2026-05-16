@@ -143,6 +143,8 @@ Die Klasse `SpaceShip` dient als gemeinsame Basisklasse für verschiedene Raumsc
 ```text @plantUML
 @startuml
 interface IMissionsobjekt {
+  +Name : string
+  +KatalogNummer : uint
   +GetStatusBericht() : string
 }
 
