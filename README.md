@@ -242,14 +242,11 @@ So wird deutlich, dass nicht der konkrete Typ wichtig ist, sondern nur der durch
 
 #### ✅ Testaufgabe
 
+Verwenden Sie nun die bereits oben gezeigte Methode `MissionsReport`, um auch Raumschiffe gemeinsam mit den anderen `IMissionsobjekt`-Instanzen auszugeben:
+
 ```csharp
 var cargoShip = new CargoShip("CargoMaster 3000", 50001, 5, 10000.0f);
 var researchShip = new ResearchShip("Explorer X", 50002, 10, "Astrophysik");
-
-static void MissionsReport(IMissionsobjekt objekt){
-    Console.WriteLine(objekt.ToString());
-    Console.WriteLine(objekt.GetStatusBericht());
-}
 
 IMissionsobjekt[] schiffe = { cargoShip, researchShip };
 foreach (var obj in schiffe.Concat(objekte))
