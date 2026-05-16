@@ -249,7 +249,12 @@ var cargoShip = new CargoShip("CargoMaster 3000", 50001, 5, 10000.0f);
 var researchShip = new ResearchShip("Explorer X", 50002, 10, "Astrophysik");
 
 IMissionsobjekt[] schiffe = { cargoShip, researchShip };
-foreach (var obj in schiffe.Concat(objekte))
+IMissionsobjekt[] objekte = { cargoShip, researchShip };
+
+foreach (var obj in schiffe)
+    MissionsReport(obj);
+
+foreach (var obj in objekte)
     MissionsReport(obj);
 ```
 
