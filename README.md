@@ -91,17 +91,17 @@ interface IVergleichbar<T> {
 <!-- class="lia-callout--note" style="width:100%" -->
 > **💡 Bonusaufgabe – Operatorüberladung:**
 > Wenn du `IVergleichbar<T>` implementiert hast, kannst du die gleiche Logik auch als überladene Operatoren anbieten.
-> Füge dazu in `Himmelskoerper` statische Methoden hinzu, für:
+> Füge dazu in `Himmelskoerper` statische `operator`-Methoden hinzu, für:
 >
 > - `<` (Kleiner-als)
 > - `>` (Größer-als)
-> - `Equals` (Gleichheit)
 > - `==` (Gleichheit)
 > - `!=` (Ungleichheit)
 > - `>=`, `<=` (optional)
 >
 > Damit kannst du statt `erde.IstGroesserAls(mond)` direkt `erde > mond` schreiben.
 > Die Interface-Methoden bleiben die eigentliche Implementierung, die Operatoren sind nur **syntaktischer Zucker** darüber.
+> Falls du zusätzlich Objektgleichheit konsistent definieren willst, überschreibe `Equals(object)` als Instanzmethode – typischerweise zusammen mit `GetHashCode()`.
 
 #### ✅ Testaufgabe
 
