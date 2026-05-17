@@ -145,7 +145,7 @@ interface IAusleihbar {
 
 **2. Implementierung**
 
-- `Buch` und `Laptop` sollen `IAusleihbar` zusätzlich zu `ICampusObjekt` erfüllen.
+- `Buch` und `Laptop` sollen `IAusleihbar` zusätzlich zu `ICampusObjekt` implementieren.
 - Bei `Ausleihen(...)` wird `IstVerfuegbar` auf `false` gesetzt.
 - Bei `Zurueckgeben()` wird `IstVerfuegbar` auf `true` gesetzt.
 
@@ -161,9 +161,9 @@ static void AusgabeLeihstatus(IAusleihbar objekt)
 #### ✅ Testaufgabe
 
 ```csharp
-// Reihenfolge: name, inventarNummer, objektspezifischer Parameter
 var buch = new Buch("Clean Code", 1001, "Robert C. Martin");
 var laptop = new Laptop("ThinkPad T14", 2001, "B-201");
+// Die Konstruktoren sollen ungültige Werte (z. B. leerer Name) abweisen.
 
 // Gleiche Objekte, aber zwei unterschiedliche Interface-Sichten:
 // IAusleihbar für Leihvorgänge, ICampusObjekt für Katalogausgaben
