@@ -71,6 +71,9 @@ interface ICampusObjekt {
   - `Buch` (z. B. mit `Autor : string`)
   - `Laptop` (z. B. mit `RaumNummer : string`)
 - Implementiere `GetStatusBericht()` jeweils passend.
+- Nutze konsistente Konstruktoren, z. B.:
+  - `Buch(string name, uint inventarNummer, string autor)`
+  - `Laptop(string name, uint inventarNummer, string raumNummer)`
 
 Beispielhafte Berichte:
 
@@ -160,10 +163,10 @@ var laptop = new Laptop("ThinkPad T14", 2001, "B-201");
 
 // Gleiche Objekte, aber zwei unterschiedliche Interface-Sichten:
 // IAusleihbar für Leihvorgänge, ICampusObjekt für Katalogausgaben
-IAusleihbar[] leihobjekte = { buch, laptop };
+IAusleihbar[] leihObjekte = { buch, laptop };
 ICampusObjekt[] campusObjekte = { buch, laptop };
 
-foreach (var item in leihobjekte)
+foreach (var item in leihObjekte)
 {
     AusgabeLeihstatus(item);
     item.Ausleihen("Max Mustermann");
