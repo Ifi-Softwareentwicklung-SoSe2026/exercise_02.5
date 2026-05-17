@@ -154,10 +154,12 @@ static void AusgabeLeihstatus(IAusleihbar objekt)
 #### ✅ Testaufgabe
 
 ```csharp
+// Reihenfolge: Name, InventarNummer, objektspezifischer Parameter
 var buch = new Buch("Clean Code", 1001, "Robert C. Martin");
 var laptop = new Laptop("ThinkPad T14", 2001, "B-201");
-// Reihenfolge: Name, InventarNummer, objektspezifischer Parameter
 
+// Gleiche Objekte, aber zwei unterschiedliche Interface-Sichten:
+// IAusleihbar für Leihvorgänge, ICampusObjekt für Katalogausgaben
 IAusleihbar[] leihobjekte = { buch, laptop };
 ICampusObjekt[] campusObjekte = { buch, laptop };
 
