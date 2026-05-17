@@ -74,6 +74,7 @@ interface ICampusObjekt {
 - Nutze konsistente Konstruktoren, z. B.:
   - `Buch(string name, uint inventarNummer, string autor)`
   - `Laptop(string name, uint inventarNummer, string raumNummer)`
+- Optional: Ergänze einfache Eingabeprüfungen (z. B. leerer Name, `inventarNummer == 0`).
 
 Beispielhafte Berichte:
 
@@ -160,7 +161,7 @@ static void AusgabeLeihstatus(IAusleihbar objekt)
 #### ✅ Testaufgabe
 
 ```csharp
-// Reihenfolge: Name, InventarNummer, objektspezifischer Parameter
+// Reihenfolge: name, inventarNummer, objektspezifischer Parameter
 var buch = new Buch("Clean Code", 1001, "Robert C. Martin");
 var laptop = new Laptop("ThinkPad T14", 2001, "B-201");
 
