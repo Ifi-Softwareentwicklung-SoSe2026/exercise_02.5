@@ -46,24 +46,30 @@ public abstract class Leihobjekt(string name, uint inventarNummer) : ICampusObje
 
 public abstract class AusleihbaresLeihobjekt(string name, uint inventarNummer) : Leihobjekt(name, inventarNummer), IAusleihbar
 {
+    protected string? AktuellerNutzer { get; private set; }
     public bool IstVerfuegbar { get; private set; } = true;
 
     public void Ausleihen(string nutzer)
     {
-        if (!IstVerfuegbar)
-        {
-            throw new InvalidOperationException($"'{Name}' ist bereits ausgeliehen.");
-        }
-
         if (string.IsNullOrWhiteSpace(nutzer))
         {
             throw new ArgumentException("Nutzer darf nicht leer sein.", nameof(nutzer));
         }
 
+        if (!IstVerfuegbar)
+        {
+            throw new InvalidOperationException($"'{Name}' ist bereits ausgeliehen.");
+        }
+
         IstVerfuegbar = false;
+        AktuellerNutzer = nutzer;
     }
 
-    public void Zurueckgeben() => IstVerfuegbar = true;
+    public void Zurueckgeben()
+    {
+        IstVerfuegbar = true;
+        AktuellerNutzer = null;
+    }
 }
 
 public sealed class Buch(string name, uint inventarNummer, string autor) : AusleihbaresLeihobjekt(name, inventarNummer)
