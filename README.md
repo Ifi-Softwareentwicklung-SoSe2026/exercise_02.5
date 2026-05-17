@@ -68,8 +68,8 @@ interface ICampusObjekt {
 
 - Erstelle die abstrakte Klasse `Leihobjekt`, die `ICampusObjekt` implementiert.
 - Leite davon mindestens zwei konkrete Klassen ab:
-  - `Buch`
-  - `Laptop`
+  - `Buch` (z. B. mit `Autor : string`)
+  - `Laptop` (z. B. mit `RaumNummer : string`)
 - Implementiere `GetStatusBericht()` jeweils passend.
 
 Beispielhafte Berichte:
@@ -171,6 +171,9 @@ foreach (var item in katalog)
 {
     Console.WriteLine(item.GetStatusBericht());
 }
+
+// Vergleich über IVergleichbar<Leihobjekt>
+Console.WriteLine(buch.IstKleinerAls(laptop));
 ```
 
 💡 Tipps
