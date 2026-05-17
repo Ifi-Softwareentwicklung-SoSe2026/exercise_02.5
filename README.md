@@ -2,7 +2,7 @@
 
 author:   Volker Göhler
 email:    volker.goehler@informatik.tu-freiberg.de
-version:  0.0.1
+version:  0.0.2
 language: de
 narrator: Deutsch Female
 
@@ -29,11 +29,11 @@ Softwareentwicklung SoSe2026
 Bearbeitungszeitraum
 ====================
 
-*13. Mai - 16. Mai 2026*
+*18. Mai - 25. Mai 2026*
 
 ## Neue Aufgaben für diese Woche
 
-Diese Zwischeneinheit zieht die **Interface-Aufgaben** aus `exercise_03` vor, damit die Konzepte vor dem Git/GitHub-Teil bearbeitet werden können.
+In dieser Woche geht es um die Einführung von **Interfaces** in unserem Missionssystem.
 
 ### **📌 Vorbereitung: Projekt aktualisieren**
 
