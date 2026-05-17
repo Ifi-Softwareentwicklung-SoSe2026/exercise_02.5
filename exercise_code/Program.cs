@@ -44,58 +44,42 @@ public abstract class Leihobjekt(string name, uint inventarNummer) : ICampusObje
     public bool IstKleinerAls(Leihobjekt anderer) => VergleicheMit(anderer) < 0;
 }
 
-public sealed class Buch(string name, uint inventarNummer, string autor) : Leihobjekt(name, inventarNummer), IAusleihbar
+public abstract class AusleihbaresLeihobjekt(string name, uint inventarNummer) : Leihobjekt(name, inventarNummer), IAusleihbar
+{
+    public bool IstVerfuegbar { get; private set; } = true;
+
+    public void Ausleihen(string nutzer)
+    {
+        if (!IstVerfuegbar)
+        {
+            throw new InvalidOperationException($"'{Name}' ist bereits ausgeliehen.");
+        }
+
+        if (string.IsNullOrWhiteSpace(nutzer))
+        {
+            throw new ArgumentException("Nutzer darf nicht leer sein.", nameof(nutzer));
+        }
+
+        IstVerfuegbar = false;
+    }
+
+    public void Zurueckgeben() => IstVerfuegbar = true;
+}
+
+public sealed class Buch(string name, uint inventarNummer, string autor) : AusleihbaresLeihobjekt(name, inventarNummer)
 {
     public string Autor { get; } = !string.IsNullOrWhiteSpace(autor)
         ? autor
         : throw new ArgumentException("Autor darf nicht leer sein.", nameof(autor));
 
-    public bool IstVerfuegbar { get; private set; } = true;
-
-    public void Ausleihen(string nutzer)
-    {
-        if (!IstVerfuegbar)
-        {
-            throw new InvalidOperationException($"'{Name}' ist bereits ausgeliehen.");
-        }
-
-        if (string.IsNullOrWhiteSpace(nutzer))
-        {
-            throw new ArgumentException("Nutzer darf nicht leer sein.", nameof(nutzer));
-        }
-
-        IstVerfuegbar = false;
-    }
-
-    public void Zurueckgeben() => IstVerfuegbar = true;
-
     public override string GetStatusBericht() => $"Buch {Name} von {Autor}";
 }
 
-public sealed class Laptop(string name, uint inventarNummer, string raumNummer) : Leihobjekt(name, inventarNummer), IAusleihbar
+public sealed class Laptop(string name, uint inventarNummer, string raumNummer) : AusleihbaresLeihobjekt(name, inventarNummer)
 {
     public string RaumNummer { get; } = !string.IsNullOrWhiteSpace(raumNummer)
         ? raumNummer
         : throw new ArgumentException("RaumNummer darf nicht leer sein.", nameof(raumNummer));
-
-    public bool IstVerfuegbar { get; private set; } = true;
-
-    public void Ausleihen(string nutzer)
-    {
-        if (!IstVerfuegbar)
-        {
-            throw new InvalidOperationException($"'{Name}' ist bereits ausgeliehen.");
-        }
-
-        if (string.IsNullOrWhiteSpace(nutzer))
-        {
-            throw new ArgumentException("Nutzer darf nicht leer sein.", nameof(nutzer));
-        }
-
-        IstVerfuegbar = false;
-    }
-
-    public void Zurueckgeben() => IstVerfuegbar = true;
 
     public override string GetStatusBericht() => $"Laptop {Name} (Raum {RaumNummer})";
 }

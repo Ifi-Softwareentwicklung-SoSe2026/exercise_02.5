@@ -1,0 +1,15 @@
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/bin/Debug/net8.0/CampusLeihsystem
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/bin/Debug/net8.0/CampusLeihsystem.deps.json
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/bin/Debug/net8.0/CampusLeihsystem.runtimeconfig.json
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/bin/Debug/net8.0/CampusLeihsystem.dll
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/bin/Debug/net8.0/CampusLeihsystem.pdb
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/obj/Debug/net8.0/CampusLeihsystem.GeneratedMSBuildEditorConfig.editorconfig
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/obj/Debug/net8.0/CampusLeihsystem.AssemblyInfoInputs.cache
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/obj/Debug/net8.0/CampusLeihsystem.AssemblyInfo.cs
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/obj/Debug/net8.0/CampusLeihsystem.csproj.CoreCompileInputs.cache
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/obj/Debug/net8.0/CampusLeihsystem.sourcelink.json
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/obj/Debug/net8.0/CampusLeihsystem.dll
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/obj/Debug/net8.0/refint/CampusLeihsystem.dll
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/obj/Debug/net8.0/CampusLeihsystem.pdb
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/obj/Debug/net8.0/CampusLeihsystem.genruntimeconfig.cache
+/home/runner/work/exercise_02.5/exercise_02.5/exercise_code/obj/Debug/net8.0/ref/CampusLeihsystem.dll
