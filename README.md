@@ -98,6 +98,9 @@ interface IVergleichbar<T> {
 #### ✅ Testaufgabe
 
 ```csharp
+var buch = new Buch("Clean Code", 1001, "Robert C. Martin");
+var laptop = new Laptop("ThinkPad T14", 2001, "B-201");
+
 ICampusObjekt[] objekte = { buch, laptop };
 
 foreach (var obj in objekte)
