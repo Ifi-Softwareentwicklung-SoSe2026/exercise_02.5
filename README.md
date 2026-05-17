@@ -33,15 +33,14 @@ Bearbeitungszeitraum
 
 ## Neue Aufgaben für diese Woche
 
-In dieser Woche geht es um die Einführung von **Interfaces** in unserem Missionssystem.
+In dieser Woche geht es um die Einführung von **Interfaces** in einem neuen **CampusLeihsystem** (statt `RaumfahrtMission`).
 
-### **📌 Vorbereitung: Projekt aktualisieren**
+### **📌 Vorbereitung: Neues Projekt anlegen**
 
-1. Nutze das bestehende **C#-Konsolenprojekt** `RaumfahrtMission` aus Aufgabe 02.
-2. Füge die finalen Klassen aus Aufgabe 02 hinzu (falls noch nicht vorhanden), die Version aus `solutions` im `exercise_02` Repo kann als Ausgangspunkt genutzt werden.
-3. Alle Klassen sollen weiterhin im Namespace **`RaumfahrtMission`** liegen.
+1. Erstelle ein neues **C#-Konsolenprojekt** `CampusLeihsystem`.
+2. Lege alle Klassen im Namespace **`CampusLeihsystem`** an.
 
-### **🔌 Aufgabe 1: Interfaces für die Mission**
+### **🔌 Aufgabe 1: Basis-Interface für Campus-Objekte**
 
 *Lernziele: Interface-Definition, Implementierung, Polymorphismus*
 
@@ -49,218 +48,147 @@ In dieser Woche geht es um die Einführung von **Interfaces** in unserem Mission
 
 #### **📝 Aufgabenstellung**
 
-Definiere das Interface `IMissionsobjekt`, das alle Objekte im Missionssystem beschreibt.
+Definiere das Interface `ICampusObjekt`, das alle Objekte im Leihsystem beschreibt.
 
 ##### **🔧 Hilfestellungen**
 
-**1. Interface `IMissionsobjekt` definieren**
+**1. Interface `ICampusObjekt` definieren**
 
 ```text @plantUML
 @startuml
-interface IMissionsobjekt {
+interface ICampusObjekt {
   +Name : string
-  +KatalogNummer : uint
+  +InventarNummer : uint
   +GetStatusBericht() : string
 }
 @enduml
 ```
 
-**2. Interface implementieren**
+**2. Abstrakte Basisklasse und konkrete Klassen**
 
-- Implementiere `IMissionsobjekt` in der abstrakten Klasse `Himmelskoerper`.
-- Implementiere `GetStatusBericht()` in den Klassen `Stern`, `Planet` und `Mond`, um einen kurzen Statusbericht zurückzugeben.
+- Erstelle die abstrakte Klasse `Leihobjekt`, die `ICampusObjekt` implementiert.
+- Leite davon mindestens zwei konkrete Klassen ab:
+  - `Buch` (z. B. mit `Autor : string`)
+  - `Laptop` (z. B. mit `RaumNummer : string`)
+- Implementiere `GetStatusBericht()` jeweils passend.
+- Nutze konsistente Konstruktoren, z. B.:
+  - `Buch(string name, uint inventarNummer, string autor)`
+  - `Laptop(string name, uint inventarNummer, string raumNummer)`
+- Optional: Ergänze einfache Eingabeprüfungen (z. B. leerer Name, `inventarNummer == 0`).
 
-  - Für `Stern`: *"Stern [Name] (Spektralklasse [Klasse]) mit Helligkeit [Helligkeit] mag"*
-  - Für `Planet`: *"Planet [Name] umkreist Körper [KatalogNummerReferenz] in [Umlaufzeit] Jahren"*
-  - Für `Mond`: *"Mond [Name] umkreist Körper [KatalogNummerReferenz] in [Umlaufzeit] Jahren"*
+Beispielhafte Berichte:
 
-**3. Weiteres Interface `IVergleichbar<T>` definieren (mit Template)**
+- `Buch`: *"Buch [Name] von [Autor]"*
+- `Laptop`: *"Laptop [Name] (Raum [RaumNummer])"*
+
+**3. Zweites Interface `IVergleichbar<T>`**
 
 ```text @plantUML
 @startuml
 interface IVergleichbar<T> {
-    +VergleicheMit(T anderer) : int 
-    +IstGroesserAls(T anderer) : bool 
-    +IstKleinerAls(T anderer) : bool 
+    +VergleicheMit(T anderer) : int
+    +IstGroesserAls(T anderer) : bool
+    +IstKleinerAls(T anderer) : bool
 }
 @enduml
 ```
 
-- Implementiere `IVergleichbar<Himmelskoerper>` in `Himmelskoerper`, sodass Himmelskörper anhand ihrer `KatalogNummer` verglichen werden können.
-
-<!-- class="lia-callout--note" style="width:100%" -->
-> **💡 Bonusaufgabe – Operatorüberladung:**
-> Wenn du `IVergleichbar<T>` implementiert hast, kannst du die gleiche Logik auch als überladene Operatoren anbieten.
-> Füge dazu in `Himmelskoerper` statische `operator`-Methoden hinzu, für:
->
-> - `<` (Kleiner-als)
-> - `>` (Größer-als)
-> - `==` (Gleichheit)
-> - `!=` (Ungleichheit)
-> - `>=`, `<=` (optional)
->
-> Damit kannst du statt `erde.IstGroesserAls(mond)` direkt `erde > mond` schreiben.
-> Die Interface-Methoden bleiben die eigentliche Implementierung, die Operatoren sind nur **syntaktischer Zucker** darüber.
-> Falls du zusätzlich Objektgleichheit konsistent definieren willst, überschreibe `Equals(object)` als Instanzmethode – typischerweise zusammen mit `GetHashCode()`.
+- Implementiere `IVergleichbar<Leihobjekt>` in `Leihobjekt`.
+- Vergleiche Objekte über `InventarNummer`.
 
 #### ✅ Testaufgabe
 
 ```csharp
-IMissionsobjekt[] objekte = { sonne, erde, mond };
+var buch = new Buch("Clean Code", 1001, "Robert C. Martin");
+var laptop = new Laptop("ThinkPad T14", 2001, "B-201");
+
+ICampusObjekt[] objekte = { buch, laptop };
+
 foreach (var obj in objekte)
 {
     Console.WriteLine(obj.GetStatusBericht());
 }
 
-// Vergleich
-Console.WriteLine(erde.IstGroesserAls(mond)); // false, da KatalogNummer 20001 < 30001
-Console.WriteLine(sonne.VergleicheMit(erde));   // negativ, da 10001 < 20001
+Console.WriteLine(buch.IstKleinerAls(laptop));
+Console.WriteLine(laptop.VergleicheMit(buch));
 ```
 
 💡 Tipps
 ====================
 
-- Ein Interface kann nicht instanziiert werden, definiert aber eine Vertragsstruktur.
+- Ein Interface beschreibt einen Vertrag, keine konkrete Implementierung.
 - Eine Klasse kann mehrere Interfaces implementieren.
-- `IComparable<T>` aus der .NET-Bibliothek funktioniert ähnlich wie `IVergleichbar<T>`.
 
-### **🚀 Aufgabe 2: SpaceShip mit Unterklassen über IMissionsobjekt nutzen**
+### **🚀 Aufgabe 2: Neues Interface `IAusleihbar` im selben System**
 
-*Lernziele: Interface-Nutzung im Code, Polymorphismus, gemeinsame Verarbeitung unterschiedlicher Objekte*
+*Lernziele: mehrere Interfaces je Klasse, gemeinsame Verarbeitung*
 
 ---
 
 #### **📝 Aufgabenstellung**
 
-Erweitere das Missionssystem um eine neue Basisklasse `SpaceShip`, die ebenfalls das Interface `IMissionsobjekt` aus Aufgabe 1 implementiert.
-
-Die Klasse `SpaceShip` dient als gemeinsame Basisklasse für verschiedene Raumschiffe. Leite davon mindestens zwei konkrete Unterklassen ab, damit sichtbar wird, warum ein Interface in einer Schleife oder einer Hilfsmethode nützlich ist.
+Definiere ein weiteres Interface `IAusleihbar` und implementiere es in `Buch` und `Laptop`.
 
 ##### **🔧 Hilfestellungen**
 
-**1. Abstrakte Klasse `SpaceShip` einführen**
+**1. Interface `IAusleihbar`**
 
 ```text @plantUML
 @startuml
-interface IMissionsobjekt {
-  +Name : string
-  +KatalogNummer : uint
-  +GetStatusBericht() : string
+interface IAusleihbar {
+  +IstVerfuegbar : bool
+  +Ausleihen(string nutzer) : void
+  +Zurueckgeben() : void
 }
-
-abstract class SpaceShip {
-  +Name : string
-  +KatalogNummer : uint
-  +CrewGroesse : int
-  +{abstract} GetStatusBericht() : string
-  +ToString() : string
-}
-
-IMissionsobjekt <|.. SpaceShip
 @enduml
 ```
 
-- `SpaceShip` soll gemeinsame Eigenschaften aller Raumschiffe kapseln.
-- Wie in Aufgabe 1 vorgegeben, gehört `GetStatusBericht()` dabei zum Vertrag von `IMissionsobjekt`.
-- `GetStatusBericht()` bleibt abstrakt, damit jede Unterklasse ihren eigenen Bericht formuliert.
-- `ToString()` soll in `SpaceShip` eine allgemeine Darstellung liefern, die von den Unterklassen erweitert oder überschrieben werden kann.
+**2. Implementierung**
 
-**2. Konkrete Unterklassen anlegen**
+- `Buch` und `Laptop` sollen `IAusleihbar` zusätzlich zu `ICampusObjekt` implementieren.
+- Bei `Ausleihen(...)` wird `IstVerfuegbar` auf `false` gesetzt.
+- Bei `Zurueckgeben()` wird `IstVerfuegbar` auf `true` gesetzt.
 
-Leite mindestens zwei Klassen von `SpaceShip` ab, zum Beispiel:
-
-- `CargoShip` mit einer Eigenschaft `LadungInTonnen`
-- `ResearchShip` mit einer Eigenschaft `Forschungsgebiet`
-
-Jede Unterklasse soll `GetStatusBericht()` und `ToString()` passend überschreiben.
-
-Ein mögliches Klassendiagramm wäre zum Beispiel:
-
-```text @plantUML
-@startuml
-interface IMissionsobjekt {
-  +GetStatusBericht() : string
-}
-
-abstract class SpaceShip {
-  +Name : string
-  +KatalogNummer : uint
-  +CrewGroesse : int
-  +{abstract} GetStatusBericht() : string
-  +ToString() : string
-}
-
-class CargoShip {
-  +LadungInTonnen : float
-  +GetStatusBericht() : string
-  +ToString() : string
-}
-
-class ResearchShip {
-  +Forschungsgebiet : string
-  +GetStatusBericht() : string
-  +ToString() : string
-}
-
-IMissionsobjekt <|.. SpaceShip
-SpaceShip <|-- CargoShip
-SpaceShip <|-- ResearchShip
-@enduml
-```
-
-**3. Ausgaben**
-
-**3.1 Interface gezielt nutzen**
-
-Speichere Himmelskörper und Raumschiffe gemeinsam in einem Array oder in einer Liste vom Typ `IMissionsobjekt`.
-
-So kannst du alle Objekte mit derselben Schleife verarbeiten, obwohl sie aus unterschiedlichen Klassenhierarchien stammen:
+**3. Interface-Nutzung in einer Hilfsmethode**
 
 ```csharp
-// sonne, erde und mond wurden bereits in Aufgabe 1 erzeugt
-IMissionsobjekt[] objekte = { sonne, erde, mond, cargoShip, researchShip };
-
-foreach (var objekt in objekte)
+static void AusgabeLeihstatus(IAusleihbar objekt)
 {
-    MissionsReport(objekt);
+    Console.WriteLine($"Verfügbar: {objekt.IstVerfuegbar}");
 }
 ```
-
-**3.2 Hilfsmethode `MissionsReport` für beliebige Missionsobjekte**
-
-Die Methode `MissionsReport`, die ein beliebiges `IMissionsobjekt` entgegennimmt und sowohl die normale Objektausgabe über `ToString()` als auch den `StatusBericht` ausgibt, ist in `Program.cs` bereits vorgegeben:
-
-```csharp
-static void MissionsReport(IMissionsobjekt objekt)
-{
-    Console.WriteLine(objekt.ToString());
-    Console.WriteLine(objekt.GetStatusBericht());
-}
-```
-
-So wird deutlich, dass nicht der konkrete Typ wichtig ist, sondern nur der durch das Interface garantierte Vertrag.
 
 #### ✅ Testaufgabe
 
-Verwenden Sie nun die bereits oben gezeigte Methode `MissionsReport`, um auch Raumschiffe gemeinsam mit den anderen `IMissionsobjekt`-Instanzen auszugeben:
-
 ```csharp
-var cargoShip = new CargoShip("CargoMaster 3000", 50001, 5, 10000.0f);
-var researchShip = new ResearchShip("Explorer X", 50002, 10, "Astrophysik");
+var buch = new Buch("Clean Code", 1001, "Robert C. Martin");
+var laptop = new Laptop("ThinkPad T14", 2001, "B-201");
+// Die Konstruktoren sollen ungültige Werte (z. B. leerer Name) abweisen.
 
-IMissionsobjekt[] schiffe = { cargoShip, researchShip };
-IMissionsobjekt[] objekte = { cargoShip, researchShip };
+// Gleiche Objekte, aber zwei unterschiedliche Interface-Sichten:
+// IAusleihbar für Leihvorgänge, ICampusObjekt für Katalogausgaben
+IAusleihbar[] leihObjekte = { buch, laptop };
+ICampusObjekt[] campusObjekte = { buch, laptop };
 
-foreach (var obj in schiffe)
-    MissionsReport(obj);
+foreach (var item in leihObjekte)
+{
+    AusgabeLeihstatus(item);
+    item.Ausleihen("Max Mustermann");
+    AusgabeLeihstatus(item);
+}
 
-foreach (var obj in objekte)
-    MissionsReport(obj);
+foreach (var item in campusObjekte)
+{
+    Console.WriteLine(item.GetStatusBericht());
+}
+
+// Vergleich über IVergleichbar<Leihobjekt>
+Console.WriteLine(buch.IstKleinerAls(laptop));
 ```
 
 💡 Tipps
 ====================
 
-- Ein Interface beschreibt, **was ein Objekt können muss**, nicht **von welcher Klasse es abstammt**.
-- Durch `IMissionsobjekt` können `Planet`, `Mond`, `Stern` und `SpaceShip` gemeinsam verarbeitet werden.
-- Die Basisklasse `SpaceShip` bündelt gemeinsame Eigenschaften, die Unterklassen ergänzen die Spezialisierung.
+- Interfaces machen Klassen aus unterschiedlichen Bereichen gemeinsam verarbeitbar.
+- `ICampusObjekt` beschreibt den Katalog-Vertrag.
+- `IAusleihbar` beschreibt den Leihvorgang-Vertrag.
