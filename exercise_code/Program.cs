@@ -1,58 +1,133 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using RaumfahrtMission;
+namespace CampusLeihsystem;
 
-class Program
+public interface ICampusObjekt
 {
-    static void Main(string[] args)
+    string Name { get; }
+    uint InventarNummer { get; }
+    string GetStatusBericht();
+}
+
+public interface IVergleichbar<T>
+{
+    int VergleicheMit(T anderer);
+    bool IstGroesserAls(T anderer);
+    bool IstKleinerAls(T anderer);
+}
+
+public interface IAusleihbar
+{
+    bool IstVerfuegbar { get; }
+    void Ausleihen(string nutzer);
+    void Zurueckgeben();
+}
+
+public abstract class Leihobjekt(string name, uint inventarNummer) : ICampusObjekt, IVergleichbar<Leihobjekt>
+{
+    public string Name { get; } = !string.IsNullOrWhiteSpace(name)
+        ? name
+        : throw new ArgumentException("Name darf nicht leer sein.", nameof(name));
+
+    public uint InventarNummer { get; } = inventarNummer > 0
+        ? inventarNummer
+        : throw new ArgumentException("InventarNummer muss größer als 0 sein.", nameof(inventarNummer));
+
+    public abstract string GetStatusBericht();
+
+    public int VergleicheMit(Leihobjekt anderer)
     {
-        // Aufgabe 1: Himmelskörper erstellen (aus Aufgabe 02)
-        Stern sonne = new Stern("Sonne", 10001, 'G', -26.74f);
-        Planet erde = new Planet("Erde", 20001, 1.0f, 10001);
-        Mond mond = new Mond("Mond", 30001, 0.0748f, 20001);
-        var halley = new Komet(
-            name: "Halley'scher Komet",
-            katalogNummer: 40001,
-            umlaufzeit: 76.0f,
-            katalogNummerReferenz: 10001
-        );
-
-        // Aufgabe 1: Interfaces testen
-        IMissionsobjekt[] objekte = { sonne, erde, mond, halley };
-        foreach (var obj in objekte)
-        {
-            Console.WriteLine(obj.GetStatusBericht());
-        }
-        Console.WriteLine(erde.IstGroesserAls(mond));
-        Console.WriteLine(sonne.VergleicheMit(erde));//
-
-        // Aufgabe 2: Raumschiffe
-        var cargoShip = new CargoShip(
-            name: "CargoMaster 3000",
-            katalogNummer: 50001,
-            crewGroesse: 5,
-            ladungInTonnen: 10000.0f
-        );
-        var researchShip = new ResearchShip(
-            name: "Explorer X",
-            katalogNummer: 50002,
-            crewGroesse: 10,
-            forschungsGebiet: "Astrophysik"
-        );
-        IMissionsobjekt[] schiffe = { cargoShip, researchShip };
-        foreach (var obj in schiffe.Concat(objekte))
-        {
-            MissionsReport(obj);
-        }
+        ArgumentNullException.ThrowIfNull(anderer);
+        return InventarNummer.CompareTo(anderer.InventarNummer);
     }
-    static void MissionsReport(IMissionsobjekt objekt)
+
+    public bool IstGroesserAls(Leihobjekt anderer) => VergleicheMit(anderer) > 0;
+
+    public bool IstKleinerAls(Leihobjekt anderer) => VergleicheMit(anderer) < 0;
+}
+
+public sealed class Buch(string name, uint inventarNummer, string autor) : Leihobjekt(name, inventarNummer), IAusleihbar
+{
+    public string Autor { get; } = !string.IsNullOrWhiteSpace(autor)
+        ? autor
+        : throw new ArgumentException("Autor darf nicht leer sein.", nameof(autor));
+
+    public bool IstVerfuegbar { get; private set; } = true;
+
+    public void Ausleihen(string nutzer)
     {
-        Console.WriteLine("Missionsbericht:");
-        Console.WriteLine("--------------------");
-        Console.WriteLine(objekt.ToString());
-        Console.WriteLine(objekt.GetStatusBericht());
-        Console.WriteLine("--------------------");
+        if (!IstVerfuegbar)
+        {
+            throw new InvalidOperationException($"'{Name}' ist bereits ausgeliehen.");
+        }
+
+        if (string.IsNullOrWhiteSpace(nutzer))
+        {
+            throw new ArgumentException("Nutzer darf nicht leer sein.", nameof(nutzer));
+        }
+
+        IstVerfuegbar = false;
+    }
+
+    public void Zurueckgeben() => IstVerfuegbar = true;
+
+    public override string GetStatusBericht() => $"Buch {Name} von {Autor}";
+}
+
+public sealed class Laptop(string name, uint inventarNummer, string raumNummer) : Leihobjekt(name, inventarNummer), IAusleihbar
+{
+    public string RaumNummer { get; } = !string.IsNullOrWhiteSpace(raumNummer)
+        ? raumNummer
+        : throw new ArgumentException("RaumNummer darf nicht leer sein.", nameof(raumNummer));
+
+    public bool IstVerfuegbar { get; private set; } = true;
+
+    public void Ausleihen(string nutzer)
+    {
+        if (!IstVerfuegbar)
+        {
+            throw new InvalidOperationException($"'{Name}' ist bereits ausgeliehen.");
+        }
+
+        if (string.IsNullOrWhiteSpace(nutzer))
+        {
+            throw new ArgumentException("Nutzer darf nicht leer sein.", nameof(nutzer));
+        }
+
+        IstVerfuegbar = false;
+    }
+
+    public void Zurueckgeben() => IstVerfuegbar = true;
+
+    public override string GetStatusBericht() => $"Laptop {Name} (Raum {RaumNummer})";
+}
+
+public static class Program
+{
+    public static void Main()
+    {
+        var buch = new Buch("Clean Code", 1001, "Robert C. Martin");
+        var laptop = new Laptop("ThinkPad T14", 2001, "B-201");
+
+        IAusleihbar[] leihObjekte = [buch, laptop];
+        ICampusObjekt[] campusObjekte = [buch, laptop];
+
+        foreach (var item in leihObjekte)
+        {
+            AusgabeLeihstatus(item);
+            item.Ausleihen("Max Mustermann");
+            AusgabeLeihstatus(item);
+        }
+
+        foreach (var item in campusObjekte)
+        {
+            Console.WriteLine(item.GetStatusBericht());
+        }
+
+        Console.WriteLine(buch.IstKleinerAls(laptop));
+        Console.WriteLine(laptop.VergleicheMit(buch));
+    }
+
+    private static void AusgabeLeihstatus(IAusleihbar objekt)
+    {
+        Console.WriteLine($"Verfügbar: {objekt.IstVerfuegbar}");
     }
 }
