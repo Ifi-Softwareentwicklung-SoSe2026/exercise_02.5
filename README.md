@@ -2,7 +2,7 @@
 
 author:   Volker Göhler
 email:    volker.goehler@informatik.tu-freiberg.de
-version:  0.0.2
+version:  0.0.3
 language: de
 narrator: Deutsch Female
 
@@ -33,7 +33,7 @@ Bearbeitungszeitraum
 
 ## Neue Aufgaben für diese Woche
 
-In dieser Woche geht es um die Einführung von **Interfaces** in einem neuen **CampusLeihsystem** (statt `RaumfahrtMission`).
+In dieser Woche geht es um die Einführung von **Interfaces** in einem neuen **CampusLeihsystem**.
 
 ### **📌 Vorbereitung: Neues Projekt anlegen**
 
@@ -96,23 +96,6 @@ interface IVergleichbar<T> {
 - Implementiere `IVergleichbar<Leihobjekt>` in `Leihobjekt`.
 - Vergleiche Objekte über `InventarNummer`.
 
-#### ✅ Testaufgabe
-
-```csharp
-var buch = new Buch("Clean Code", 1001, "Robert C. Martin");
-var laptop = new Laptop("ThinkPad T14", 2001, "B-201");
-
-ICampusObjekt[] objekte = { buch, laptop };
-
-foreach (var obj in objekte)
-{
-    Console.WriteLine(obj.GetStatusBericht());
-}
-
-Console.WriteLine(buch.IstKleinerAls(laptop));
-Console.WriteLine(laptop.VergleicheMit(buch));
-```
-
 💡 Tipps
 ====================
 
@@ -156,34 +139,6 @@ static void AusgabeLeihstatus(IAusleihbar objekt)
 {
     Console.WriteLine($"Verfügbar: {objekt.IstVerfuegbar}");
 }
-```
-
-#### ✅ Testaufgabe
-
-```csharp
-var buch = new Buch("Clean Code", 1001, "Robert C. Martin");
-var laptop = new Laptop("ThinkPad T14", 2001, "B-201");
-// Die Konstruktoren sollen ungültige Werte (z. B. leerer Name) abweisen.
-
-// Gleiche Objekte, aber zwei unterschiedliche Interface-Sichten:
-// IAusleihbar für Leihvorgänge, ICampusObjekt für Katalogausgaben
-IAusleihbar[] leihObjekte = { buch, laptop };
-ICampusObjekt[] campusObjekte = { buch, laptop };
-
-foreach (var item in leihObjekte)
-{
-    AusgabeLeihstatus(item);
-    item.Ausleihen("Max Mustermann");
-    AusgabeLeihstatus(item);
-}
-
-foreach (var item in campusObjekte)
-{
-    Console.WriteLine(item.GetStatusBericht());
-}
-
-// Vergleich über IVergleichbar<Leihobjekt>
-Console.WriteLine(buch.IstKleinerAls(laptop));
 ```
 
 💡 Tipps
