@@ -156,9 +156,10 @@ static void AusgabeLeihstatus(IAusleihbar objekt)
 ```csharp
 var buch = new Buch("Clean Code", 1001, "Robert C. Martin");
 var laptop = new Laptop("ThinkPad T14", 2001, "B-201");
+// Reihenfolge: Name, InventarNummer, objektspezifischer Parameter
 
 IAusleihbar[] leihobjekte = { buch, laptop };
-ICampusObjekt[] katalog = { buch, laptop };
+ICampusObjekt[] campusObjekte = { buch, laptop };
 
 foreach (var item in leihobjekte)
 {
@@ -167,7 +168,7 @@ foreach (var item in leihobjekte)
     AusgabeLeihstatus(item);
 }
 
-foreach (var item in katalog)
+foreach (var item in campusObjekte)
 {
     Console.WriteLine(item.GetStatusBericht());
 }
