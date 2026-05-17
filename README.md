@@ -78,8 +78,8 @@ interface ICampusObjekt {
 
 Beispielhafte Berichte:
 
-- `Buch`: *"Buch [Name] von [Autor], verfügbar: [IstVerfuegbar]"*
-- `Laptop`: *"Laptop [Name] (Raum [RaumNummer]), verfügbar: [IstVerfuegbar]"*
+- `Buch`: *"Buch [Name] von [Autor]"*
+- `Laptop`: *"Laptop [Name] (Raum [RaumNummer])"*
 
 **3. Zweites Interface `IVergleichbar<T>`**
 
